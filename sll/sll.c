@@ -102,11 +102,16 @@ void add_position(){
     }
     else{
         SLL *p=head;
-        for(i=1;i<(pos-1) && p->next ;i++){
+        for(i=1;i<(pos-1) && p!=NULL ;i++){
             p=p->next;
         }
-        new->next=p->next;
-        p->next=new;
+        if(p){
+            new->next=p->next;
+            p->next=new;
+        }
+        else{
+            printf("invalid\n"):
+        }
     }
 }
 
@@ -206,6 +211,68 @@ void delete_end(){
         printf("deleted first node");
     }
 }
+void delete_middle(){
+    if(head==NULL){
+        printf("no nodes exist to delete returned\n");
+        return;
+    }
+    else{
+        SLL *slow=head,*fast=head,*prev=head;
+        if(head->next==NULL){
+            free(head);
+            head=NULL;
+        }
+        else{
+            // in even mode 
+            //delete 1st middle
+            //delete 2nd middle[fast && fast->next]
+            while(fast->next && fast->next->next){
+                    prev=slow;
+                    slow=slow->next;
+                    fast=fast->next->next;
+            }
+            prev->next=slow->next;
+            free(slow);
+        
+        }
+    }
+}
+
+void delete_databased(){
+    if(head==NULL){
+        printf("no nodes exist to delete returned\n");
+        return;
+    }
+    else{
+        int d;
+        printf("enter data:");
+        scanf("%d",&d);
+        SLL *p=head,*prev=0;
+
+        while(p){
+            if(p->d!=d){
+                prev=p;
+                p=p->next;
+            }
+            else{
+                break;
+            }
+        }
+        if(p && p->d==d){
+            if(prev==NULL){
+                //1st node update head;
+                head=head->next;
+            }
+            else{
+                prev->next=p->next;
+            }
+            free(p)
+        }
+        else{
+            printf("node not found\n");
+        }
+    }
+}
 
 void print_all(){
 
@@ -249,6 +316,7 @@ void print_databased(){
 
 void print_reverse(SLL *head){
      if(head==NULL){
+         printf("no nodes\n");
         return;
      }
      print_reverse(head->next);
@@ -272,6 +340,45 @@ void sort(){
         }
     }
     printf("data sorted\n");
+}
+
+void print_middle(){
+    if(head==NULL){
+        printf("no nodes\n");
+        return;
+    }
+    else{
+        SLL *slow=head,*fast=head;
+        
+        // VERSION 1 → fast && fast->next
+        // → for EVEN nodes → slow stops at SECOND middle
+
+        // VERSION 2 → fast->next && fast->next->next
+        // → for EVEN nodes → slow stops at FIRST middle
+        
+        while(fast && fast->next){
+            slow=slow->next;
+            fast=fast->next->next;
+        }
+        pritnf("%d \n",slow->d);
+}
+
+void print_position(){
+    if(head==NULL){
+        printf("no nodes\n");
+        return;
+    }
+    SLL *p=head;
+    int i=1;
+    while(i<pos && p!=NULL){
+        p=p->next;
+    }
+    if(p){
+        printf("%d \n",p->d)
+    }
+    else{
+        printf("invalid data\n");
+    }
 }
 
 void reverse_link(){
