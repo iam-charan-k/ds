@@ -74,7 +74,7 @@ void add_middle(){
             fast=fast->next->next;
         }
 
-        new->next=slow;
+        new->next=slow->next;
         slow->next=new;
     }
     
@@ -159,23 +159,24 @@ void delete_middle(){
         printf("no nodes exist to delete returned\n");
         return;
    }
-   if(head->next==NULL){
-        free(head);
-        head=NULL;
-   }
-   else{
-        SLL *prev=head;
+ 
+        SLL *prev=NULL;
         SLL *slow=head;
         SLL * fast =head;
 
-        while(fast->next && fast->next){
-            fast=fast->next->next;
+        while(fast->next && fast->next->next){
             prev=slow;
             slow=slow->next;
+            fast=fast->next->next;
         }
+       if(prev==NULL){
+           head=head->next;
+       }
+       else{
         prev->next=slow->next;
+       }
         free(slow);
-   } 
+    
 }
 
 void delete_position(){
@@ -184,7 +185,26 @@ void delete_position(){
         return;
    }
    else{
-
+       SLL *prev=NULL;
+       SLL *p=head;
+       int i=1
+       while((i<pos) && (p!=NULL)){
+           prev=p; 
+           p=p->next;
+           i++;
+       }
+       if(p!=NULL){
+           if(pos==1){
+                head=head->next;
+           }
+           else{
+                prev->next=p->next;
+           }
+           free(p);
+       }
+       else{
+           printf("invalid position\n");
+       }
    }
 }
 
@@ -393,12 +413,11 @@ void reverse_link(){
 
     while(cur){
         
-        new=cur->next;
+        next=cur->next;
         cur->next=prev;
         prev=cur;
         cur=next;
-
-        cur=cur->next;
+        
     }
     head=prev;
 
